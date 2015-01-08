@@ -4,6 +4,7 @@ require 'cgi'
 class SubmissionsController < ApplicationController
   include SubmissionsHelper
   include PaginationHelper
+  include TagsHelper
 
   helper_method :all_assignments_marked?
 
@@ -48,6 +49,7 @@ class SubmissionsController < ApplicationController
     @path = params[:path] || '/'
     @previous_path = File.split(@path).first
     @repository_name = @grouping.group.repository_name
+
     repo = @grouping.group.repo
     begin
       if params[:revision_number]
@@ -249,6 +251,13 @@ class SubmissionsController < ApplicationController
                   current_submission_used: :results,
                   accepted_student_memberships: :user)
         .select { |g| g.non_rejected_student_memberships.size > 0 }
+    end
+
+    # Gets the top tags and their usage.
+    @top_tags = get_top_tags
+    @top_tags_num = Hash.new
+    @top_tags.each do |current|
+      @top_tags_num[current.id] = get_num_groupings_for_tag(current.id)
     end
 
     respond_to do |format|

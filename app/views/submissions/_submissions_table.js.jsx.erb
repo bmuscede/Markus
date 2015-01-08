@@ -1,12 +1,16 @@
 <script type='text/jsx'>
   /** @jsx React.DOM */
+
+  // The maximum number of tags.
   var MAX_TAGS = 5;
 
   // Gets tag data for submissions.
-  var currentTagList = ""
-  for (var i = 0; i < MAX_TAGS; i++){
-    currentTagList += "<li><div class=\"tag_element\">Tag Data " + i + "</div></li>"
-  }
+  var currentTagList = "";
+
+  <% @top_tags.each do |tag| %>
+    currentTagList += '<li><div class="tag_element">' +
+      '<%= tag.name %>' + '</div></li>';
+  <% end %>
 
   var SubmissionsTable = React.createClass({
     getDefaultProps: function() {
@@ -64,7 +68,7 @@
                       '<%= j raw I18n.t(:'browse_submissions.tags_search') %>' +
                     '</li>' +
                     '<li class="tag_list_search">' +
-                      '<%= text_field_tag 'name' %>' +
+                      '<%= text_field_tag 'name'%>' +
                     '</li>' +
                     '<li class="tag_list_title">' +
                       '<%= j raw I18n.t(:'browse_submissions.tags_list') %>' +
