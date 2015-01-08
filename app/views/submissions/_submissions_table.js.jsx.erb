@@ -150,6 +150,7 @@
       document.getElementById('working').style.display = '';
 
       jQuery.ajax({
+        url: 'populate_submissions_table',
         method: 'GET',
         dataType: 'json',
         success: function(data) {
